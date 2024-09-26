@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url(images/field-6288341_1920.jpg) no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .dashboard-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row;
+        }
+
+        .sidebar {
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-right: 2rem;
+            border-right: 1px solid #ccc;
+        }
+
+        .content {
+            width: 75%;
+            padding-left: 2rem;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .button {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #4f46e5;
+        }
+
+        .button.add-product {
+            background-color: #10b981;
+        }
+
+        .button.add-product:hover {
+            background-color: #059669;
+        }
+
+        .button.logout {
+            background-color: #e3342f;
+        }
+
+        .button.logout:hover {
+            background-color: #cc1f1a;
+        }
+
+        .edit-button {
+            background-color: #f59e0b;
+        }
+
+        .edit-button:hover {
+            background-color: #d97706;
+        }
+    </style>
+</head>
+
+<body class="flex w-screen h-screen justify-center items-center">
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <img id="profilePic" class="profile-pic" src="" alt="Profile Picture">
+            <h2 id="profileName" class="text-xl font-bold mb-4"></h2>
+            <p id="phoneNumber" class="text-gray-600 mb-4"></p>
+            <button class="button edit-button" onclick="redirectToEditPage()">Edit Profile</button>
+            <button class="button" onclick="showMessageRequests()">Message Requests</button>
+            <button class="button" onclick="showProducts('availableProducts')">Available Products</button>
+            <button class="button" onclick="showProducts('productsSold')">Products Sold</button>
+            <button class="button add-product" id="addProductButton" onclick="redirectToProductsPage()">Add Product</button>
+            <button class="button logout" onclick="logout()">Logout</button>
+        </div>
+        <div class="content">
+            <div id="details"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('currentUsername');
+            const userDetailsJSON = localStorage.getItem(username);
+
+            if (!userDetailsJSON) {
+                console.error('User details not found in local storage.');
+                return;
+            }
+
+            const userDetails = JSON.parse(userDetailsJSON);
+
+            document.getElementById('profilePic').src = userDetails.profilePic || 'default-profile.png'; // Default profile picture if none uploaded
+            document.getElementById('profileName').innerText = userDetails.username;
+            document.getElementById('phoneNumber').innerText = userDetails.phoneNumber || 'No phone number provided';
+
+            showMessageRequests();
+        });
+
+        function showMessageRequests() {
+            const username = localStorage.getItem('currentUsername');
+            const userDetailsJSON = localStorage.getItem(username);
+
+            if (!userDetailsJSON) {
+                console.error('User details not found in local storage.');
+                return;
+            }
+
+            const userDetails = JSON.parse(userDetailsJSON);
+            const detailsDiv = document.getElementById('details');
+
+            if (!userDetails.messageRequests || userDetails.messageRequests.length === 0) {
+                detailsDiv.innerHTML = '<p>No message requests found.</p>';
+                return;
+            }
+
+            detailsDiv.innerHTML = '<h3 class="text-2xl font-bold mb-4">Message Requests</h3>';
+
+            userDetails.messageRequests.forEach(request => {
+                detailsDiv.innerHTML += `<p>${request}</p>`;
+            });
+        }
+
+        function showProducts(type) {
+            const username = localStorage.getItem('currentUsername');
+            const userDetailsJSON = localStorage.getItem(username);
+
+            if (!userDetailsJSON) {
+                console.error('User details not found in local storage.');
+                return;
+            }
+
+            const userDetails = JSON.parse(userDetailsJSON);
+            const detailsDiv = document.getElementById('details');
+            detailsDiv.innerHTML = `<h3 class="text-2xl font-bold mb-4">${type === 'availableProducts' ? 'Available Products' : 'Products Sold'}</h3>`;
+
+            if (!userDetails[type] || userDetails[type].length === 0) {
+                detailsDiv.innerHTML += `<p>No ${type === 'availableProducts' ? 'available products' : 'products sold'} found.</p>`;
+                return;
+            }
+
+            userDetails[type].forEach(product => {
+                detailsDiv.innerHTML += `<p>${product}</p>`;
+            });
+
+            if (type === 'availableProducts') {
+                document.getElementById('addProductButton').innerText = 'Add Product';
+                document.getElementById('addProductButton').onclick = () => window.location.href = 'successful.html'; // Redirect to product.html
+            }
+        }
+
+        function redirectToProductsPage() {
+            const username = localStorage.getItem('currentUsername');
+            const userDetailsJSON = localStorage.getItem(username);
+
+            if (!userDetailsJSON) {
+                console.error('User details not found in local storage.');
+                return;
+            }
+
+            const userDetails = JSON.parse(userDetailsJSON);
+
+            if (!userDetails.availableProducts || userDetails.availableProducts.length === 0) {
+                window.location.href = 'successful.html';
+            } else {
+                window.location.href = 'product.html';
+            }
+        }
+
+        function redirectToEditPage() {
+            window.location.href = 'edit_profile.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUsername');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

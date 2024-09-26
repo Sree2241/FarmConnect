@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url(images/field-6288341_1920.jpg) no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .edit-profile-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 5rem;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 1rem auto;
+        }
+
+        .edit-pic {
+            position: relative;
+            top: -30px;
+            left: 30px;
+            cursor: pointer;
+            color: #6366f1;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 0.375rem;
+        }
+
+        .button {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #4f46e5;
+        }
+
+        .back-button {
+            margin-top: 1rem;
+            background-color: #e3342f;
+        }
+
+        .back-button:hover {
+            background-color: #cc1f1a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="edit-profile-container">
+        <h2 class="text-2xl font-bold mb-4">Edit Profile</h2>
+        <form id="editProfileForm">
+            <div class="form-group text-center">
+                <img id="profilePic" class="profile-pic" src="" alt="Profile Picture">
+                <input type="file" id="profilePicInput" class="hidden">
+                <button type="button" class="edit-pic" onclick="document.getElementById('profilePicInput').click()">Edit</button>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" id="phoneNumber" name="phoneNumber">
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob">
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender">
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <button type="submit" class="button">Save Changes</button>
+            <button type="button" class="button back-button" onclick="redirectToDashboard()">Back to Dashboard</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('currentUsername');
+            const userDetailsJSON = localStorage.getItem(username);
+
+            if (!userDetailsJSON) {
+                console.error('User details not found in local storage.');
+                return;
+            }
+
+            const userDetails = JSON.parse(userDetailsJSON);
+
+            document.getElementById('profilePic').src = userDetails.profilePic || 'default-profile.png';
+            document.getElementById('username').value = userDetails.username || '';
+            document.getElementById('phoneNumber').value = userDetails.phoneNumber || '';
+            document.getElementById('dob').value = userDetails.dob || '';
+            document.getElementById('gender').value = userDetails.gender || '';
+        });
+
+        document.getElementById('profilePicInput').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('profilePic').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('editProfileForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const username = localStorage.getItem('currentUsername');
+            const userDetailsJSON = localStorage.getItem(username);
+
+            if (!userDetailsJSON) {
+                console.error('User details not found in local storage.');
+                return;
+            }
+
+            const userDetails = JSON.parse(userDetailsJSON);
+
+            // Update userDetails with form data
+            const updatedDetails = {
+                ...userDetails,
+                username: document.getElementById('username').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                dob: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                profilePic: document.getElementById('profilePic').src
+            };
+
+            // Save updated details back to localStorage
+            localStorage.setItem(username, JSON.stringify(updatedDetails));
+
+            // Optionally, notify user and redirect
+            alert('Profile updated successfully!');
+            redirectToDashboard();
+        });
+
+        function redirectToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+
+</html>

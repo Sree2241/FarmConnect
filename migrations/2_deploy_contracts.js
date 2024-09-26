@@ -1,5 +1,5 @@
-var EFarming = artifacts.require("EFarming");
+var FarmConnect = artifacts.require("FarmConnect");
 
 module.exports = function(deployer) {
-  deployer.deploy(EFarming);
+  deployer.deploy(FarmConnect);
 };

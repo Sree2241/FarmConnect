@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url(images/field-6288341_1920.jpg) no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .products-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .product-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .product-info {
+            margin-left: 1rem;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 0.375rem;
+        }
+
+        .back-button {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .back-button:hover {
+            background-color: #4f46e5;
+        }
+    </style>
+</head>
+
+<body class="flex w-screen h-screen justify-center items-center">
+    <div class="products-container">
+        <h2 class="text-2xl font-bold mb-4">Available Products</h2>
+        <div id="productsList" class="space-y-4">
+            <!-- Product items will be dynamically added here -->
+        </div>
+        <button class="back-button" onclick="goBackToDashboard()">Back to Dashboard</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Retrieve current user's username from local storage
+            const currentUsername = localStorage.getItem('currentUsername');
+
+            if (!currentUsername) {
+                console.error('Username not found in local storage.');
+                return;
+            }
+
+            // Retrieve user details object based on username
+            const userDetailsJSON = localStorage.getItem(currentUsername);
+
+            if (!userDetailsJSON) {
+                console.error(`User details not found for username: ${currentUsername}`);
+                return;
+            }
+
+            let userDetails;
+
+            try {
+                // Parse JSON string to JavaScript object
+                userDetails = JSON.parse(userDetailsJSON);
+            } catch (error) {
+                console.error('Error parsing user details JSON:', error);
+                return;
+            }
+
+            // Get the products list container
+            const productsList = document.getElementById('productsList');
+
+            // Check if the user has available products
+            if (!userDetails.availableProducts || userDetails.availableProducts.length === 0) {
+                const noProductsMessage = document.createElement('p');
+                noProductsMessage.textContent = 'No available products found.';
+                productsList.appendChild(noProductsMessage);
+                return;
+            }
+
+            // Loop through available products and create HTML for each product
+            userDetails.availableProducts.forEach(product => {
+                const { name, price, quantity, image } = product;
+
+                // Create product item container
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.innerHTML = `
+                    <img src="${image}" alt="${name}" class="product-image">
+                    <div class="product-info">
+                        <p class="font-bold">${name}</p>
+                        <p>Price: $${price}</p>
+                        <p>Quantity: ${quantity} kg</p>
+                    </div>
+                `;
+
+                // Append product item to products list container
+                productsList.appendChild(productItem);
+            });
+        });
+
+        function goBackToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+
+</html>

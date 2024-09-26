@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url(images/field-6288341_1920.jpg) no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .register-container {
+            max-width: 400px;
+            width: 100%;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .button {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #4f46e5;
+        }
+    </style>
+</head>
+
+<body class="flex w-screen h-screen justify-center items-center">
+    <div class="register-container">
+        <h2 class="text-xl font-bold mb-4">Register</h2>
+        <form id="registerForm" onsubmit="register(event)">
+            <div class="mb-4">
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" id="username" class="mt-1 p-2 w-full border rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="password" class="mt-1 p-2 w-full border rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number (Optional)</label>
+                <input type="tel" id="phoneNumber" pattern="[0-9]{10}" class="mt-1 p-2 w-full border rounded"
+                    placeholder="Enter 10-digit phone number">
+            </div>
+            <div class="mb-4">
+                <label for="profilePic" class="block text-sm font-medium text-gray-700">Profile Picture (Optional)</label>
+                <input type="file" id="profilePic" accept="image/*" class="mt-1 p-2 w-full border rounded">
+            </div>
+            <div class="mb-4">
+                <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                <select id="role" class="mt-1 p-2 w-full border rounded" required>
+                    <option value="farmer">Farmer</option>
+                    <option value="manufacturer">Manufacturer</option>
+                    <option value="retailer">Retailer</option>
+                    <option value="customer">Customer</option>
+                </select>
+            </div>
+            <button type="submit" class="button">Register</button>
+        </form>
+        <p class="mt-4">Already a member? <a href="login.html" class="text-blue-500">Login here</a></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        const contractAddress = '0x7A72f21D2ed69c88c23811e4AB7226cF818ed2b6'; // Replace with your contract's address
+        const contractABI = [
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "_userId",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "string",
+                        "name": "_role",
+                        "type": "string"
+                    }
+                ],
+                "name": "RegisteredEvent",
+                "type": "event"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "registered",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "users",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "username",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "passwordHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "role",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "usersCount",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_username",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_password",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_role",
+                        "type": "string"
+                    }
+                ],
+                "name": "register",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_username",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_password",
+                        "type": "string"
+                    }
+                ],
+                "name": "verifyCredentials",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_userAddress",
+                        "type": "address"
+                    }
+                ],
+                "name": "getUserDetails",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ]; // Replace with your contract's ABI
+
+        let web3;
+        let farmConnect;
+
+        async function initWeb3() {
+            if (window.ethereum) {
+                web3 = new Web3(window.ethereum);
+                await window.ethereum.enable();
+            } else if (window.web3) {
+                web3 = new Web3(window.web3.currentProvider);
+            } else {
+                alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+                return;
+            }
+
+            farmConnect = new web3.eth.Contract(contractABI, contractAddress);
+        }
+
+        async function register(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const profilePicFile = document.getElementById('profilePic').files[0];
+            const role = document.getElementById('role').value;
+
+            let profilePicUrl = '';
+            if (profilePicFile) {
+                profilePicUrl = await getBase64(profilePicFile);
+            }
+
+            try {
+                const accounts = await web3.eth.getAccounts();
+                const account = accounts[0];
+
+                // Check if user is already registered
+                const isRegistered = await farmConnect.methods.registered(account).call();
+                if (isRegistered) {
+                    // Check if user details already exist in local storage
+                    const existingUserDetails = localStorage.getItem(username);
+                    if (existingUserDetails) {
+                        alert('You are already registered. Redirecting to login page.');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                }
+
+                await farmConnect.methods.register(username, password, role).send({ from: account });
+
+                // Store user details in local storage
+                const userDetails = {
+                    username,
+                    role,
+                    phoneNumber: phoneNumber || '',
+                    profilePic: profilePicUrl || '',
+                    messageRequests: [],
+                    availableProducts: [],
+                    productsSold: []
+                };
+                localStorage.setItem(username, JSON.stringify(userDetails));
+                alert('Registration successful. Please log in.');
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error(error);
+                alert('An error occurred during registration.');
+            }
+        }
+
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        window.addEventListener('load', initWeb3);
+    </script>
+</body>
+
+</html>

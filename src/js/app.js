@@ -1,68 +1,100 @@
 App = {
   web3Provider: null,
   contracts: {},
+  account: '0x0',
 
-  init: async function() {
-    // Load pets.
-    $.getJSON('../pets.json', function(data) {
-      var petsRow = $('#petsRow');
-      var petTemplate = $('#petTemplate');
-
-      for (i = 0; i < data.length; i ++) {
-        petTemplate.find('.panel-title').text(data[i].name);
-        petTemplate.find('img').attr('src', data[i].picture);
-        petTemplate.find('.pet-breed').text(data[i].breed);
-        petTemplate.find('.pet-age').text(data[i].age);
-        petTemplate.find('.pet-location').text(data[i].location);
-        petTemplate.find('.btn-adopt').attr('data-id', data[i].id);
-
-        petsRow.append(petTemplate.html());
-      }
-    });
-
-    return await App.initWeb3();
+  init: function() {
+    return App.initWeb3();
   },
 
-  initWeb3: async function() {
-    /*
-     * Replace me...
-     */
-
+  initWeb3: function() {
+    if (typeof web3 !== 'undefined') {
+      App.web3Provider = web3.currentProvider;
+      web3 = new Web3(web3.currentProvider);
+    } else {
+      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+      web3 = new Web3(App.web3Provider);
+    }
     return App.initContract();
   },
 
   initContract: function() {
-    /*
-     * Replace me...
-     */
+    $.getJSON("FarmConnect.json", function(farmConnectArtifact) {
+      App.contracts.FarmConnect = TruffleContract(farmConnectArtifact);
+      App.contracts.FarmConnect.setProvider(App.web3Provider);
 
-    return App.bindEvents();
+      return App.render();
+    });
   },
 
-  bindEvents: function() {
-    $(document).on('click', '.btn-adopt', App.handleAdopt);
+  render: function() {
+    web3.eth.getCoinbase(function(err, account) {
+      if (err === null) {
+        App.account = account;
+        $("#accountAddress").html("Your Account: " + account);
+      }
+    });
   },
 
-  markAdopted: function() {
-    /*
-     * Replace me...
-     */
+  registerUser: function() {
+    var name = document.getElementById("name").value;
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirmPassword").value;
+    var phone = document.getElementById("phone").value;
+    var role = document.getElementById("role").value;
+
+    // Validate inputs
+    if (name.trim() === '' || username.trim() === '' || password === '' || confirmPassword === '' || phone.trim() === '') {
+      document.getElementById("status").innerText = "Please fill in all fields.";
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      document.getElementById("status").innerText = "Passwords do not match.";
+      return;
+    }
+
+    // Call the smart contract method to check if the username is available
+    App.contracts.FarmConnect.deployed().then(function(instance) {
+      return instance.isUsernameAvailable(username);
+    }).then(function(isAvailable) {
+      if (!isAvailable) {
+        document.getElementById("status").innerText = "Username already exists. Please choose another one.";
+      } else {
+        // Username is available, proceed with registration
+        App.registerWithEthereum(name, username, password, phone, role);
+      }
+    }).catch(function(error) {
+      console.error("Error occurred during username check:", error);
+      alert("Error occurred during username check. See console for details.");
+    });
   },
 
-  handleAdopt: function(event) {
-    event.preventDefault();
-
-    var petId = parseInt($(event.target).data('id'));
-
-    /*
-     * Replace me...
-     */
+  registerWithEthereum: function(name, username, password, phone, role) {
+    web3.eth.getAccounts().then(function(accounts) {
+      var account = accounts[0];
+      App.contracts.FarmConnect.deployed().then(function(instance) {
+        return instance.register(name, username, password, phone, role, {from: account});
+      }).then(function(result) {
+        document.getElementById("status").innerText = "Registration successful!";
+        // Redirect to login page or perform other actions
+      }).catch(function(error) {
+        console.error("Error occurred during registration:", error);
+        alert("Error occurred during registration. See console for details.");
+      });
+    });
   }
-
 };
 
 $(function() {
   $(window).load(function() {
     App.init();
+  });
+
+  // Event listener for the registration form submission
+  document.getElementById("registerForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    App.registerUser();
   });
 });

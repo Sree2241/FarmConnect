@@ -1,61 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Pete's Pet Shop</title>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmConnect || Empowering Farmers, Enriching Lives</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 col-sm-8 col-sm-push-2">
-          <h1 class="text-center">Pete's Pet Shop</h1>
-          <hr/>
-          <br/>
+<body>
+    <header class="header">
+        <a href="#" class="logo"><i class="fas fa-shopping-basket"></i> FarmConnect </a>
+
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#about">about us</a>
+            <a href="#features">features</a>
+            <a href="#products">products</a>
+            <a href="#review">review</a>
+            <a href="#blogs">blogs</a>
+        </nav>
+        <div class="icons">
+            <div class="fas fa-bars" id="menu-btn"></div>
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
         </div>
-      </div>
+        <form class="search-form" id="search-form">
+            <input type="text" id="search-box" placeholder="search here...">
+            <button id="search">Search</button>
+        </form>
+        <div id="search-result"></div>
+        <button id="show-more-btn">Show more</button>
 
-      <div id="petsRow" class="row">
-        <!-- PETS LOAD HERE -->
-      </div>
-    </div>
-
-    <div id="petTemplate" style="display: none;">
-      <div class="col-sm-6 col-md-4 col-lg-3">
-        <div class="panel panel-default panel-pet">
-          <div class="panel-heading">
-            <h3 class="panel-title">Scrappy</h3>
-          </div>
-          <div class="panel-body">
-            <img alt="140x140" data-src="holder.js/140x140" class="img-rounded img-center" style="width: 100%;" src="https://animalso.com/wp-content/uploads/2017/01/Golden-Retriever_6.jpg" data-holder-rendered="true">
-            <br/><br/>
-            <strong>Breed</strong>: <span class="pet-breed">Golden Retriever</span><br/>
-            <strong>Age</strong>: <span class="pet-age">3</span><br/>
-            <strong>Location</strong>: <span class="pet-location">Warren, MI</span><br/><br/>
-            <button class="btn btn-default btn-adopt" type="button" data-id="0">Adopt</button>
-          </div>
+        <div class="login-form">
+            <a href="login.html" class="btn">Login</a>
+            <a href="register.html" class="btn">Register</a>
         </div>
-      </div>
-    </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/web3.min.js"></script>
-    <script src="js/truffle-contract.js"></script>
-    <script src="js/app.js"></script>
-  </body>
+        <div class="profile-buttons">
+            <a href="product.html" class="btn">Farmers</a>
+            <a href="buyers.html" class="btn">Buyers</a>
+        </div>
+    </header>
+
+    <section class="home" id="home">
+        <div class="content">
+            <h3>FarmConnect</h3>
+            <p>Connecting Farmers, Manufacturers, Retailers, and Customers</p>
+            <a href="#products" class="btn">Shop now</a>
+        </div>
+    </section>
+
+<!-- About us section start -->
+<section class="about" id="about">
+  <h1 class="heading"> About <span>Us</span></h1>
+
+  <div class="box-container">
+      <div class="box">
+          <img src="images/tomatoes-1561565_1280.jpg" alt="">
+          <h3>fresh and organic</h3>
+          <p>We grow with atmost care and suggest our farmers to grow the best plants. Our products are of richest quality and best for your healthy diet.</p>
+          <a target="_blank" href="https://en.wikipedia.org/wiki/Organic_farming" class="btn">Read more</a>
+      </div>
+      <div class="box">
+          <img src="images/agriculture-1807549_1280.jpg" alt="">
+          <p>Organic farming can be beneficial on biodiversity and environmental protection at local level. However, because organic farming has lower yields compared to conventional farming, additional agricultural land is needed elsewhere in the world, which means that natural land has to be converted into agricultural land. This can cause loss of biodiversity and negative climate effects that outweigh the local environmental gains achieved</p>
+          <a target="_blank" href="https://en.wikipedia.org/wiki/Organic_farming" class="btn">Read more</a>
+      </div>
+      <div class="box">
+          <img src="images/machinery-8154964_1280.jpg" alt="">
+          <p>The fertilizers of organic origin such as compost manure, green manure, and bone meal and places emphasis on techniques such as crop rotation and companion planting. It originated early in the 20th century in reaction to rapidly changing farming practices. Certified organic agriculture accounts for 70 million hectares (170 million acres) globally, with over half of that total in Australia.[6] Organic farming continues to be developed by various organizations today. Biological pest control, mixed cropping, and the fostering of insect predators are encouraged. Organic standards are designed to allow the use of naturally-occurring substances while prohibiting or strictly limiting synthetic substances.[7] For instance, naturally-occurring pesticides such as pyrethrin are permitted, while synthetic fertilizers and pesticides are generally prohibited.</p>
+          <a target="_blank" href="https://en.wikipedia.org/wiki/Organic_farming" class="btn">Read more</a>
+      </div>
+  </div>
+</section>
+<section class = "features" id = "features">
+  <h1 class="heading"> Our <span>Features</span></h1>
+
+  <div class="box-container">
+  <div class = "box">
+      <img src="images/Forms-pana.png" alt="">
+      <h3>Sell and Buy</h3>
+      <p>A small farmer runs an account, which is designed for a farmer or market manager to start their own multi-producer online market. This platform simulates a live farmer’s market, with the ability to be open only during a certain time frame, display goods, collect money, and communicate with customers. Major benefits include the time saved not having to sit at a market, and not having to harvest or pack up products until they are sold.</p>
+      <a href="#" class = "btn">read more</a>
+  </div>
+  <div class = "box">
+      <img src="images/Delivery address-pana.png" alt="">
+      <h3>Easy Delivery </h3>
+      <p>The best organic grocery delivery services are those that offer a wide variety of organic foods, competitive prices, and quick delivery. These organic food delivery companies offer a convenient way to get your hands on healthy, sustainable, and delicious food. There are many benefits to using an online organic foods supermarket, including the convenience and the wide range of options that are available. The best organic products websites are open and transparent about their practices and how they received their certification. n </p>
+      <a href="#" class = "btn">read more</a>
+  </div>
+  <div class = "box">
+      <img src="images/E-Wallet-rafiki.png" alt="">
+      <h3>Cashless Payments </h3>
+      <p> We provide you with the wide variety of payment options which will help you to buy with ease and secure way. </p>
+      <a href="#" class = "btn">read more</a>
+  </div>
+</div>
+
+</section>
+
+<section class = "products" id = "products">
+
+  <h1 class = "heading"> Our <span>products</span> </h1>
+  <div class = "swiper product-slider">
+      <div class = "swiper-wrapper">
+          <div class = "swiper-slide box">
+              <img src="images/naked-oats-848959_1280.jpg" alt="">
+              <h3>Oats</h3>
+              <div class = "price"> Rs 50 /-</div>
+              <div class = "stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+              <a href="#" class = "btn">add to cart</a>
+          </div>
+          <div class = "swiper-slide box">
+              <img src="images/cereal-7838638_1280.jpg" alt="">
+              <h3>Cereals</h3>
+              <div class = "price"> Rs 50 /-</div>
+              <div class = "stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+              <a href="#" class = "btn">add to cart</a>
+          </div>
+          <div class = "swiper-slide box">
+              <img src="images/wheat-381848_1280.jpg" alt="">
+              <h3>Wheat</h3>
+              <div class = "price"> Rs 50 /-</div>
+              <div class = "stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+              <a href="#" class = "btn">add to cart</a>
+          </div>
+          <div class = "swiper-slide box">
+              <img src="images/barley-2336205_1280.jpg" alt="">
+              <h3>barley</h3>
+              <div class = "price"> Rs 50 /-</div>
+              <div class = "stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+              <a href="#" class = "btn">add to cart</a>
+          </div>
+      </div>
+  </div>
+
+  <div class = "swiper product-slider">
+      <div class = "swiper-wrapper">
+          <div class = "swiper-slide box">
+              <img src="images/millet-7566575_1280.jpg" alt="">
+              <h3>Millet</h3>
+              <div class = "price"> Rs 50 /-</div>
+              <div class = "stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+              <a href="#" class = "btn">add to cart</a>
+          </div>
+          <div class = "swiper-slide box">
+              <img src="images/corn-8299009_1280.jpg" alt="">
+              <h3>Corn</h3>
+              <div class = "price"> Rs 40 /-</div>
+              <div class = "stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+              <a href="#" class = "btn">add to cart</a>
+          </div>
+          <div class = "swiper-slide box">
+              <img src="images/bread-6486963_1280.jpg" alt="">
+              <h3>Bread</h3>
+              <div class = "price"> Rs 50 /-</div>
+              <div class = "stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+              <a href="#" class = "btn">add to cart</a>
+          </div>
+              <a href="#" class = "btn">add to cart</a>
+          </div>
+      </div>
+  </div>
+  <section class="review" id ="review">
+    <h1 class="heading"> customer's <span>review</span></h1>
+    <div class="swiper review-slider">
+       <div class="swiper-wrapper">
+           <div class="swiper-slide box">
+               <img src="images/customer1.png" alt="">
+               <p>Iam an analyst and I've found that this is best website for all your products.</p>
+               <h3>john deo</h3>
+               <div class="stars">
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star-half-alt"></i>
+               </div>
+           </div>
+
+           <div class="swiper-slide box">
+               <img src="images/customer2.jpeg" alt="">
+               <p>Iam an analyst and I've found that this is best website for all your products.</p>
+               <h3>Emma</h3>
+               <div class="stars">
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star-half-alt"></i>
+               </div>
+           </div>
+
+           <div class="swiper-slide box">
+               <img src="images/customer3.jpeg" alt="">
+               <p>Iam an analyst and I've found that this is best website for all your products.</p>
+               <h3>Rebecca</h3>
+               <div class="stars">
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star-half-alt"></i>
+               </div>
+           </div>
+
+           <div class="swiper-slide box">
+               <img src="images/customer4.jpeg" alt="">
+               <p>Iam an analyst and I've found that this is best website for all your products.</p>
+               <h3>Daniel</h3>
+               <div class="stars">
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star"></i>
+                   <i class="fas fa-star-half-alt"></i>
+               </div>
+           </div>
+       </div>
+    </div>
+</section>
+
+
+</section>
+<section class="blogs" id="blogs">
+  <h1 class="heading">our <span>blogs</span></h1>
+  <div class="box-container">
+      <div class="box">
+          <img src="images/man.jpg" alt="">
+          <div class="content">
+              <div class="icons">
+                  <a href="#"><i class="fas fa-user"></i>by farmer</a>
+                  <a href="#"><i class="fas fa-calender"></i>1st may, 2021</a>
+              </div>
+              <h3>Making agriculture viable for small and marginal farmers</h3>
+              <p>Agriculture is the main livelihood for 43 percent of India’s population, and accounted for 18.8 percent of the country’s GDP in 2020–21. Of this, approximately 85 percent of the farm households comprise small or marginal farmers with less than two hectares of land. In fact, the average landholding is only 0.5 hectares per household. These small units of land are frequently seen as unviable for farming and incapable of providing a sustainable livelihood for their owners. This is even more likely to happen in regions where water security is an issue. </p>
+              <a  target="_blank" href="https://idronline.org/article/agriculture/making-agriculture-viable-for-small-and-marginal-farmers/" class="btn">read more</a>
+          </div>
+      </div>
+
+      <div class="box">
+          <img src="images/man2.jpg" alt="">
+          <div class="content">
+              <div class="icons">
+                  <a href="#"><i class="fas fa-user"></i>by farmer</a>
+                  <a href="#"><i class="fas fa-calender"></i>1st may, 2021</a>
+              </div>
+              <h3>Sustainable agriculture: Bringing Indian farmers on board</h3>
+              <p>
+                  A group of determined farmers from Srikakulam district in Andhra Pradesh is quietly changing farming norms by managing to reap profits while using cultivation techniques that are less labour- and water-intensive and support carbon sequestration. None of them embarked on this journey as environmental stewards—they took the plunge as curious small-landholding farmers who were consumed by the need to coax their land to yield better because farming is their lifeline.</p>
+              <a target="_blank" href="https://idronline.org/article/agriculture/sustainable-agriculture-bringing-indian-farmers-on-board/" class="btn">read more</a>
+          </div>
+      </div>
+
+      <div class="box">
+          <img src="images/customer1.png" alt="">
+          <div class="content">
+              <div class="icons">
+                  <a href="#"><i class="fas fa-user"></i>by user</a>
+                  <a href="#"><i class="fas fa-calender"></i>1st may, 2021</a>
+              </div>
+              <h3>E-Farming is the future</h3>
+              <p>E-Farming, which is also referred to as email farming, is a method of creating a roster of individuals who have given their consent to receive emails from you regarding products and services that they may find appealing. Our aim is to recommend beneficial and practical products by means of affiliate links and earn a commission when a purchase is made through the provided link.</p>
+              <a target="_blank" href="https://www.mid-day.com/brand-media/article/e-farming-review-must-read-scam-or-legit-igor-kheifet-course-23281595" class="btn">read more</a>
+          </div>
+      </div>
+
+  </div>
+</section>
+
+<section class="footer">
+  <div class="box-container">
+      <div class="box">
+          <h3> groco <i class="fas fa-shopping-basket"></i></h3>
+          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate praesentium quod numquam officiis voluptas expedita odit tenetur ab quibusdam cumque veniam repudiandae, dolore assumenda eligendi culpa ex mollitia sapiente repellendus!</p>
+          <div class="share">
+              <a href="#" class = "fab fa-facebook-f"></a>
+              <a href="#" class = "fab fa-twitter"></a>
+              <a href="https://www.instagram.com/sree_41/" target="_blank" class = "fab fa-instagram"></a>
+              <a href="#" class = "fab fa-linkedin"></a>
+          </div>
+      </div>
+
+      <div class="box">
+          <h3>contact info</h3>
+          <a href="#" class = "links"> <i class="fas fa-phone"></i>+91 93813 98012</a>
+          <a href="#" class = "links"> <i class="fas fa-envelope"></i>sreejaponnagani@gmail.com</a>
+          <a href="#" class = "links"> <i class="fas fa-map-marker-alt"></i> saroornagar, Hyderabad</a>
+      </div>
+
+      <div class="box">
+          <h3>quick links</h3>
+          <a href="#" class = "links"> <i class="fas fa-right"></i>home</a>
+          <a href="#about" class = "links"> <i class="fas fa-right"></i>AboutUs</a>
+          <a href="#features" class = "links"> <i class="fas fa-right"></i>features</a>
+          <a href="#products" class = "links"> <i class="fas fa-right"></i>Products</a>
+          <a href="#review" class = "links"> <i class="fas fa-right"></i>Reviews</a>
+          <a href="#blogs" class = "links"> <i class="fas fa-right"></i>Blogs</a>
+      </div>
+
+      <div class="box">
+          <h3>newsletter</h3>
+          <p>subscribe for latest updates</p>
+          <input type="email" placeholder="your email"class="email">
+          <input type="submit" value="subscribe" class="btn">
+       
+      </div>
+  </div>
+  <div class ="credit"> credited by <span> Sreeja Ponnagani</span>| all rights reserved</div>
+</section>
+
+ 
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script src="js/app3.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/web3.min.js"></script>
+<script src="js/truffle-contract.js"></script>
+</body>
+
 </html>
